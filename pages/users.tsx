@@ -2,55 +2,42 @@ import React from 'react';
 import { GetServerSideProps } from 'next';
 //import { useSession, getSession } from 'next-auth/react';
 import Layout from '../components/Layout';
-import Post, { PostProps } from '../components/Post';
+import User, { UserProps } from '../components/User';
 import prisma from '../lib/prisma';
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   //const session = await getSession({ req });
   const session = true;
-
+  
   if (!session) {
     res.statusCode = 403;
     return { props: { drafts: [] } };
   }
 
-  const drafts = await prisma.post.findMany({
-    include: {
-      author: {
-        select: { name: true }
-      }
-    }
-  });
+  const users = await prisma.user.findMany();
+  
   return {
-    props: { drafts },
+    props: { 
+      users: JSON.parse(JSON.stringify(users))
+    }
   };
 };
 
 type Props = {
-  drafts: PostProps[];
+  users: UserProps[];
 };
 
-const Drafts: React.FC<Props> = (props) => {
-  //const { data: session } = useSession();
+const Users: React.FC<Props> = (props) => {
   const session = true;
-
-  if (!session) {
-    return (
-      <Layout>
-        <h1>Meus rascunhos</h1>
-        <div>Você precisa estar autenticado para visualizar esta página!</div>
-      </Layout>
-    );
-  }
 
   return (
     <Layout>
       <div className="page">
-        <h1>Meus rascunhos</h1>
+        <h1>Usuários</h1>
         <main>
-          {props.drafts.map((post) => (
-            <div key={post.id} className="post">
-              <Post post={post} />
+          {props.users.map((user) => (
+            <div key={user.id} className="post">
+              <User user={user} />
             </div>
           ))}
         </main>
@@ -73,4 +60,4 @@ const Drafts: React.FC<Props> = (props) => {
   );
 };
 
-export default Drafts;
+export default Users;

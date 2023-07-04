@@ -1,16 +1,17 @@
 import React from 'react';
+import { useSession } from "next-auth/react"
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Router from 'next/router';
 
-const Header: React.FC = () => {
+export default function Header() 
+{
   const router = useRouter();
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
 
-  //const { data: session, status } = useSession();
-
-  const status = null;
-  const session = true;
+    const status = null;
+    const session = true;
 
   let left = (
     <div className="left">
@@ -87,8 +88,8 @@ const Header: React.FC = () => {
   if (!session) {
     right = (
       <div className="right">
-        <Link href="/api/auth/signin">
-          <a data-active={isActive('/signup')}>Log in</a>
+        <Link href="/login">
+          <a data-active={isActive('/login')}>Log in</a>
         </Link>
         <style jsx>{`
           a {
@@ -126,6 +127,9 @@ const Header: React.FC = () => {
         <Link href="/drafts">
           <a data-active={isActive('/drafts')}>Meus rascunhos</a>
         </Link>
+        <Link href="/users">
+          <a data-active={isActive('/drafts')}>Usuários</a>
+        </Link>
         <style jsx>{`
           .bold {
             font-weight: bold;
@@ -157,12 +161,20 @@ const Header: React.FC = () => {
             <a>Novo post</a>
           </button>
         </Link>
+
+        <Link href="/register">
+          <button>
+            <a>Novo Usuário</a>
+          </button>
+        </Link>
         {/* <button onClick={() => signOut()}>
           <a>Log out</a>
         </button> */}
-        <button>
-          <a>Log out</a>
-        </button>
+        <Link href="/login">
+          <button>
+            <a>Log out</a>
+          </button>
+        </Link>
         <style jsx>{`
           a {
             text-decoration: none;
@@ -206,11 +218,11 @@ const Header: React.FC = () => {
         nav {
           display: flex;
           padding: 2rem;
+          border-bottom: 1px solid #000;
           align-items: center;
+          box-shadow: 2px 1px 4px;
         }
       `}</style>
     </nav>
   );
 };
-
-export default Header;

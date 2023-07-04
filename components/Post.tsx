@@ -24,6 +24,10 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
         div {
           color: inherit;
           padding: 2rem;
+          border: 1px solid;
+          border-radius: 5px;
+          box-shadow: 2px 1px 4px;
+
         }
       `}</style>
     </div>

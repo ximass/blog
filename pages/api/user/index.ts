@@ -8,11 +8,11 @@ export default async function handle(req, res) {
 
   if (req.method === 'POST')
   {
-    const result = await prisma.post.create({
+    const result = await prisma.user.create({
       data: {
-        title: data.title,
-        content: data.content,
-        author: { connect: { email: 'mateus.schmitz7@hotmail.com' } }
+        name: data.name,
+        email: data.email,
+        password: data.password
       }
     });
 
@@ -20,11 +20,12 @@ export default async function handle(req, res) {
   } 
   else if (req.method === 'PUT')
   {
-    const result = await prisma.post.update({
+    const result = await prisma.user.update({
       where: { id: data.id },
       data: {
-          title: data.title,
-          content: data.content
+          name: data.title,
+          email: data.content,
+          password: data.password
       }
     });
 
